@@ -34,6 +34,7 @@ exports.handler = function(event, context, callback) {
 
   S3.getObject({Bucket: BUCKET, Key: originalKey}).promise()
     .then(data => Sharp(data.Body)
+      .rotate()
       .resize(width, height)
       .toFormat('png')
       .toBuffer()
