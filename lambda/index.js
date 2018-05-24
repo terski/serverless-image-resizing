@@ -9,6 +9,7 @@ const Sharp = require('sharp');
 const BUCKET = process.env.BUCKET;
 const URL = process.env.URL;
 const ALLOWED_DIMENSIONS = new Set();
+const MAX_AGE = 14 * 24 * 60 * 60; // 14 days in seconds
 
 if (process.env.ALLOWED_DIMENSIONS) {
   const dimensions = process.env.ALLOWED_DIMENSIONS.split(/\s*,\s*/);
@@ -43,6 +44,7 @@ exports.handler = function(event, context, callback) {
         Body: buffer,
         Bucket: BUCKET,
         ContentType: 'image/png',
+        CacheControl: `max-age=${MAX_AGE}`,
         Key: key,
       }).promise()
     )
